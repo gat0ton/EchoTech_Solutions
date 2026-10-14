@@ -22,7 +22,6 @@ class Empleado(p):
         self.__puesto = __puesto
         self.__horas = __horas
         self.__salario = __salario
-
     
     @property
     def id_usuario(self):
@@ -68,4 +67,4 @@ class Empleado(p):
         self.__horas = input_horas
         self.__salario = input_salario
 
-empleado = Empleado(1, "Tomás", "Pérez", 27, "555-1234", "Calle Falsa 123", "tomás.perez@example.com", "Desarrollador", 40, 50000.0)#CAMBIAR!!!
+empleado = Empleado(1, "Tomás", "Pérez", 27, "555-1234", "Calle Falsa 123", "tomás.perez@example.com", "admin", 0, 1)

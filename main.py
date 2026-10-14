@@ -1,3 +1,5 @@
-from Fuente.Logica import Logica
+from Fuente.Logica import Pantalla
 
-Logica.principal()
+nombre = Pantalla.principal(True)
+if nombre is not None:
+    Pantalla.usuario(True, nombre)

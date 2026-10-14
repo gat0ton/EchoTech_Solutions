@@ -1,4 +1,3 @@
-from .Empleado import Empleado 
 from .Empleado import empleado #CAMBIAR!!!
 
 class Usuario:
@@ -24,11 +23,12 @@ class Usuario:
     def id_usuario(self):
         return self.__id
 
-@property
-def contraseña(self):
-    return self.__contraseña
+    @property
+    def contraseña(self):
+        return self.__contraseña
+    
+    @property
+    def nombre(self):
+        return self.__nombre
 
 U_empleado = Usuario(empleado.id_usuario, empleado._consultar_datos()["Nombre"], "123")#CAMBIAR!!!
-
-if __name__ == '__main__':#CAMBIAR!!!
-    print(U_empleado._mostrar_informacion())
