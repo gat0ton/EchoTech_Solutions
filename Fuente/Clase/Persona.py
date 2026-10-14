@@ -21,20 +21,26 @@ class Persona(ABC):
         self.__correo = __correo
 
     @abstractmethod
-    def __consultar_datos(self):
+    def _consultar_datos(self):
         return self.__id, self.__nombre, self.__apellido, self.__edad, self.__telefono, self.__direccion, self.__correo
 
     @abstractmethod
-    def __actualizar_datos(
-                        self,
-                             input_id: int, 
-                             input_nombre: str, input_apellido: str, 
-                             input_edad: int, input_telefono: str, 
-                             input_direccion: str, input_puesto: str, input_horas: int, 
-                             input_salario: float
-                             
-                             ):
-        pass    
-
-
+    def _actualizar_datos(
+        self,
+        input_id: int,
+        input_nombre: str,
+        input_apellido: str,
+        input_edad: int,
+        input_telefono: str,
+        input_direccion: str,
+        input_puesto: str,
+        input_horas: int,
+        input_salario: float,
+    ):
+        self.__id = input_id
+        self.__nombre = input_nombre
+        self.__apellido = input_apellido
+        self.__edad = input_edad
+        self.__telefono = input_telefono
+        self.__direccion = input_direccion
 

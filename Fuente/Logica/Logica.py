@@ -1,5 +1,5 @@
 from .Autenticador import Autenticador
-from .Menu import Menu
+from ..Menu.Menu import Menu
 from sys import exit
 
 no_login = True
@@ -7,7 +7,7 @@ no_admin = True
 def principal():
     while no_login:
         try:
-            
+            Menu.mostrar_mensaje('login', 'menu')
             opcion = input(Menu.mensaje('aux','opcion'))
 
             if opcion.strip() == "1":
@@ -16,9 +16,8 @@ def principal():
 
                 if Autenticador._verificar_login(usuario, contraseña):
 
-                    Menu.mensaje('login','contraseña_invalida')
+                    Menu.mostrar_mensaje('login','contraseña_invalida')
                     Menu.limpiar_pantalla()
-                    Menu.login()
 
 
                 else:
@@ -34,30 +33,30 @@ def principal():
 while no_admin:
     try:
         Menu.limpiar_pantalla()
-        Menu.usuario()
+        Menu.mostrar_mensaje('usuario','menu')
 
-        opcion = input(Menu.opcion())
+        opcion = input(Menu.mensaje('aux', 'opcion'))
 
         if opcion == "1":
-            print("Registrar Horas")            
+                            
             break
 
         elif opcion == "2":
-            print("Consultar tus Proyectos")
+            Menu.mostrar_mensaje('usuario', 'proyectos')
             break
 
         elif opcion == "3":
-            print("Actualizar tus Datos")
+            Menu.mostrar_mensaje('usuario', 'actualizar')
             break
 
         elif opcion == "4":
-            Menu.salir()
+            Menu.mostrar_mensaje('aux', 'salir')
             exit()
 
         else:
-            print("Opción no válida, por favor intente de nuevo.")
+            Menu.mostrar_mensaje('aux', 'opcion_invalida')
             Menu.limpiar_pantalla()
 
     except ValueError:
-        print("Opción no válida, por favor intente de nuevo.")
+        Menu.mostrar_mensaje('aux', 'opcion_invalida')
         Menu.limpiar_pantalla()

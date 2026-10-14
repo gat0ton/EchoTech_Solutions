@@ -26,23 +26,25 @@ class Empleado(p):
     
     @property
     def id_usuario(self):
-        return self.__id
+        return super()._consultar_datos()[0]
 
-    def __consultar_datos(self):
+    def _consultar_datos(self):
+        id_, nombre, apellido, edad, telefono, direccion, correo = super()._consultar_datos()
         return {
-            "ID": self.__id,
-            "Nombre": self.__nombre,
-            "Apellido": self.__apellido,
-            "Edad": self.__edad,
-            "Teléfono": self.__telefono,
-            "Dirección": self.__direccion,
+            "ID": id_,
+            "Nombre": nombre,
+            "Apellido": apellido,
+            "Edad": edad,
+            "Teléfono": telefono,
+            "Dirección": direccion,
+            "Correo": correo,
             "Puesto": self.__puesto,
             "Horas": self.__horas,
             "Salario": self.__salario
         }
 
     
-    def __actualizar_datos(
+    def _actualizar_datos(
             self,
                          input_id: int, 
                          input_nombre: str, input_apellido: str, 
@@ -51,15 +53,19 @@ class Empleado(p):
                          input_salario: float
                          
                          ):
-        
-        self.__id = input_id
-        self.__nombre = input_nombre
-        self.__apellido = input_apellido
-        self.__edad = input_edad
-        self.__telefono = input_telefono
-        self.__direccion = input_direccion
+        super()._actualizar_datos(
+            input_id,
+            input_nombre,
+            input_apellido,
+            input_edad,
+            input_telefono,
+            input_direccion,
+            input_puesto,
+            input_horas,
+            input_salario,
+        )
         self.__puesto = input_puesto
         self.__horas = input_horas
         self.__salario = input_salario
 
-empleado = Empleado(1, "Tomás", "Pérez", 27, "555-1234", "Calle Falsa 123", "tomás.perez@example.com", "Desarrollador", 40, 50000.0)
+empleado = Empleado(1, "Tomás", "Pérez", 27, "555-1234", "Calle Falsa 123", "tomás.perez@example.com", "Desarrollador", 40, 50000.0)#CAMBIAR!!!

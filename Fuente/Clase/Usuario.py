@@ -28,5 +28,7 @@ class Usuario:
 def contraseña(self):
     return self.__contraseña
 
-U_empleado = Usuario(empleado.__id, empleado.__nombre, "123")
-print(U_empleado._mostrar_informacion())
+U_empleado = Usuario(empleado.id_usuario, empleado._consultar_datos()["Nombre"], "123")#CAMBIAR!!!
+
+if __name__ == '__main__':#CAMBIAR!!!
+    print(U_empleado._mostrar_informacion())

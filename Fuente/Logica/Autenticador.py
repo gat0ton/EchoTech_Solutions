@@ -1,6 +1,6 @@
 from ..Clase.Usuario import Usuario
 from ..Clase.Usuario import U_empleado as uemp
-from . import Menu
+from ..Menu import Menu
 usuario = [Usuario, uemp]
 #users.append(DAO) CAMBIAR!!!
 class Autenticador:
@@ -10,10 +10,5 @@ class Autenticador:
         no_login = True
         for usuario in usuarios:
             if usuario.__id == __id and usuario.__contraseña == __contraseña:
-                
-                Menu.limpiar_pantalla()
-                print(f"Bienvenido, {usuario.__id}!")
-
                 return no_login == False
-            
         return no_login == True
