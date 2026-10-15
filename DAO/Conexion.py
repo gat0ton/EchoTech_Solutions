@@ -19,10 +19,6 @@ class Conexion:
         self.__config = config
 
     @contextmanager
-    
-
-
-    @contextmanager
     def conectar(self):
         conexion = pymysql.connect(**self.__config)
         print(self.mensajesBDD('conexion_e'))
@@ -35,6 +31,3 @@ class Conexion:
 
 
 
-if __name__ == "__main__": #Ejecucion desde root
-    conexion = Conexion()
-    conexion.conectar()
