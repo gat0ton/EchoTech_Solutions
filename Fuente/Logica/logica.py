@@ -1,9 +1,9 @@
 from os import system
 from sys import exit
-from .Autenticador import Autenticador as aut
+from .autenticador import Autenticador
 
 
-class IPantalla:
+class Logica:
 
     @staticmethod
     def limpiar():

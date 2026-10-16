@@ -18,14 +18,28 @@ class Conexion:
 
         self.__config = config
 
+    @staticmethod
+    def _verificar_login(usualist):
+        params= None
+        if login(params) in list:
+                return login
+        else:
+            return False
+        
     @contextmanager
     def conectar(self):
-        conexion = pymysql.connect(**self.__config)
-        print(self.mensajesBDD('conexion_e'))
+
+
         try:
+            conexion = pymysql.connect(**self.__config)
+
+            print(self.mensajesBDD('conexion_e'))
+
             yield conexion
+
         except Exception:
             self.rollback(conexion)
+
         finally:
             self.desconectar(conexion)
 
