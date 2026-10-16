@@ -11,7 +11,6 @@ class Usuario:
         self.__id = __id
         self.__nombre = __nombre
         self.__contraseña = __contraseña
-    SUPER_ADMIN = Usuario(empleado.id_usuario, empleado._consultar_datos()["Nombre"], "123")
     
     @property
     def id_usuario(self):
@@ -24,5 +23,5 @@ class Usuario:
     @property
     def nombre(self):
         return self.__nombre
-
+SUPER_ADMIN = Usuario(empleado.id_usuario, empleado._consultar_datos()["Nombre"], "123")
     

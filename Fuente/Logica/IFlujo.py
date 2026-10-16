@@ -1,17 +1,20 @@
 from os import system
 from sys import exit
 from .Autenticador import Autenticador as aut
-from Fuente.Logica.IPantalla import IPantalla
 
 
 class IPantalla:
+
+    @staticmethod
+    def limpiar():
+        return system('cls') 
 
     
     separar     = f'\n{"=" * 40}'
     
     advertencia = f'\n{"!" * 40}\n'
 
-    __diccionario = {
+    _diccionario = {
                  
                 'aux': {
                     'opcion'          : "Ingrese una Opcion: ",
@@ -69,20 +72,25 @@ class IPantalla:
 
                     'opcion' : "Horas Trabajadas: "}}
 
-    def principal(no_login = True):
-        while no_login:
+    @staticmethod
+    def mensaje(self,__clave, __nido):
+        
+        return self._diccionario[__clave][__nido]
+
+    def principal(self):
+        while True:
 
             try:
 
-                IPantalla.limpiar_pantalla()
-                IPantalla.mensaje('login', 'menu')
-                opcion = input(IPantalla.mensaje('aux','opcion'))
+                self.limpiar()
+                self.mensaje('login', 'menu')
+                opcion = input(self.mensaje('aux','opcion'))
 
 
                 if opcion.strip() == "1":
 
-                    __usuario = input(IPantalla.mensaje('login','usuario'))
-                    __contrasena = input(IPantalla.mensaje('login','contraseña'))
+                    __usuario = input(self.mensaje('login','usuario'))
+                    __contrasena = input(self.mensaje('login','contraseña'))
 
                     nombre_usuario = aut._verificar_login(__usuario, __contrasena)
 
@@ -90,11 +98,11 @@ class IPantalla:
                     if nombre_usuario is None:
 
                         IPantalla.mensaje('login','contraseña_invalida')
-                        IPantalla.limpiar_pantalla()
+                        IPantalla.limpiar()
 
                     else:
 
-                        return nombre_usuario
+                        IPantalla.mensaje('','',nombre_usuario)
 
                     
                 else:
@@ -105,12 +113,12 @@ class IPantalla:
 
             except ValueError:
 
-                IPantalla.limpiar_pantalla()
+                IPantalla.limpiar()
                 IPantalla.mensaje('aux','opcion_invalida')
 
 
-    def usuario(no_admin: bool, nombre: str):
-        while no_admin:
+    def usuario(nombre: str):
+        while True:
 
             try:
 
@@ -145,14 +153,9 @@ class IPantalla:
                 IPantalla.mensaje('aux', 'opcion_invalida')
                 IPantalla.limpiar_pantalla()
 
-        @staticmethod
-        def limpiar_pantalla():
-            return system('cls')
+        
 
-        @staticmethod
-        def mensaje(__clave, __nido, __nombre = None):
-            
-            yield IPantalla.__diccionario[__clave][__nido]
+        
 
         
         

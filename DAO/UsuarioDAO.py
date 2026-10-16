@@ -1,5 +1,4 @@
-
-class Gestor:
+class UsuarioDAO:
 
 
     @staticmethod

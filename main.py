@@ -1,5 +1,5 @@
-from Fuente.Logica import Pantalla
+from Fuente.Logica import Flujo
 
-nombre = Pantalla.principal(True)
+nombre = Flujo.principal(True)
 if nombre is not None:
-    Pantalla.usuario(True, nombre)
+    Flujo.usuario(True, nombre)
