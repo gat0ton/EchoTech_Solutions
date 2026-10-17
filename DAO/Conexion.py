@@ -3,11 +3,9 @@ from contextlib import contextmanager
 
 class Conexion:
 
-    
-
     def __init__(self):
 
-        config = {
+        __config = {
                             'host'       : 'localhost',
                             'port'       : int(3306),
                             'user'       : 'admin',
@@ -16,15 +14,14 @@ class Conexion:
                             'autocommit' : False
                         }
 
-        self.__config = config
+        self.__config = __config
 
     @staticmethod
-    def _verificar_login(usualist):
-        params= None
-        if login(params) in list:
-                return login
+    def _verificar_login(id, usuarios):
+        if id in usuarios:
+                return False
         else:
-            return False
+            return True
         
     @contextmanager
     def conectar(self):

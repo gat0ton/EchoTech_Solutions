@@ -1,4 +1,4 @@
-from .Empleado import empleado #CAMBIAR!!!
+from empleado import Empleado 
 
 class Usuario:
 
@@ -6,22 +6,16 @@ class Usuario:
             self,
                 __id: int,
                 __nombre: str,
-                   __contraseña: str
+                   __contrasena: str
                    ):
         self.__id = __id
         self.__nombre = __nombre
-        self.__contraseña = __contraseña
+        self.__contrasena = __contrasena
     
     @property
-    def id_usuario(self):
-        return self.__id
-
-    @property
-    def contraseña(self):
+    def _registro(self):
         return self.__contraseña
     
-    @property
-    def nombre(self):
-        return self.__nombre
-SUPER_ADMIN = Usuario(empleado.id_usuario, empleado._consultar_datos()["Nombre"], "123")
     
+
+_SUPER_ADMIN = (Usuario(Empleado(1,'','',1,'','',''),'admin','admin'))
