@@ -4,17 +4,15 @@ from contextlib import contextmanager
 class Conexion:
 
     def __init__(self):
+        config = {
+                    'host'       : 'localhost',
+                    'port'       : int(3306),
+                    'user'       : 'admin',
+                    'password'   : '',
+                    'database'   : 'EchoTech Solutions',
+                    'autocommit' : False}
 
-        __config = {
-                            'host'       : 'localhost',
-                            'port'       : int(3306),
-                            'user'       : 'admin',
-                            'password'   : '',
-                            'database'   : 'EchoTech Solutions',
-                            'autocommit' : False
-                        }
-
-        self.__config = __config
+        self.__config = config
 
     @staticmethod
     def _verificar_login(id, usuarios):

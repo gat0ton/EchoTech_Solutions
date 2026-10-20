@@ -1,4 +1,4 @@
-from empleado import Empleado 
+from Fuente.Clase.persona.empleado import Empleado 
 
 class Usuario:
 

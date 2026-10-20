@@ -1,6 +1,13 @@
+lazy from Fuente.Clase.persona.usuario import Usuario
+
 class Repositorio:
-    __personas = []
+
+    def __init__(self, __listadopersonas : list):
+
+        self.__listapersonas = []
+
 
     @classmethod
     def _listas(cls):
-        return {'persona' : cls.__personas}
+        return 
+

@@ -1,9 +1,10 @@
 from subprocess import run
 from sys import exit
 from Fuente.Logica.logica_i import Menu
+from Fuente.Logica.autenticador import Autenticador
 
-def limpiar():
-    run('cls')
+def __limpiar():
+    return run('cls')
 
 class Logica:
 
@@ -12,30 +13,17 @@ class Logica:
         while True:
 
             try:
-
-
-                limpiar()
+                __limpiar()
                 Menu._mensaje('login', 'menu')
                 opcion = input(Menu._mensaje('aux','opcion'))
-
+                __limpiar()
 
                 if opcion.strip() == "1":
-
                     __usuario = input(Menu._mensaje('login','usuario'))
                     __contrasena = input(Menu._mensaje('login','contraseña'))
 
-                    nombre_usuario = aut._verificar_login(__usuario, __contrasena)
-
-
-                    if nombre_usuario is None:
-
-                        Menu._mensaje('login','contraseña_invalida')
-                        Menu.limpiar()
-
-                    else:
-
-                        Menu._mensaje('','',nombre_usuario)
-
+                    Autenticador._login(__usuario, __contrasena)
+                    
                     
                 else:
 
@@ -54,7 +42,7 @@ class Logica:
 
             try:
 
-                Menu.limpiar_pantalla()
+                __limpiar()
                 Menu._mensaje('login','bienvenida', nombre)
 
                 opcion = input(Menu._mensaje('aux', 'opcion'))
