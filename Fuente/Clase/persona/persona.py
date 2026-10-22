@@ -1,8 +1,23 @@
 from abc import ABC, abstractmethod
+from typing import TypedDict
 
 
 class Persona(ABC):
-    def __init__(self,
+    class AbcDatos(TypedDict, total=False):
+        id: int
+        nombre: str
+        apellido: str
+        edad: int
+        genero: str
+        telefono: str
+        direccion: str
+        correo: str
+        horas: int
+        salario: float
+
+    @abstractmethod
+    def __init__(
+            self,
         id: int,
         nombre: str,
         apellido: str,
@@ -10,55 +25,30 @@ class Persona(ABC):
         genero: str,
         telefono: str,
         direccion: str,
-        correo: str):
+        correo: str,
+        horas: int,
+        salario: float):
         
-        self.__id = id
-        self.__nombre = nombre
-        self.__apellido = apellido
-        self.__edad = edad
-        self.__genero = genero
-        self.__telefono = telefono
-        self.__direccion = direccion        
-        self.__correo = correo
+        self._id = id
+        self._nombre = nombre
+        self._apellido = apellido
+        self._edad = edad
+        self._genero = genero
+        self._telefono = telefono
+        self._direccion = direccion
+        self._correo = correo
+        self._horas = horas
+        self._salario = salario
 
-    @property
-    def id(self):
-        return self.__id
-
-    @property
-    def nombre(self):
-        return self.__nombre
-
-    @property
-    def apellido(self):
-        return self.__apellido
-
-    @property
-    def edad(self):
-        return self.__edad
-
-    @property
-    def genero(self):
-        return self.__genero
-
-    @property
-    def telefono(self):
-        return self.__telefono
-
-    @property
-    def direccion(self):
-        return self.__direccion
-
-    @property
-    def correo(self):
-        return self.__correo
-
+        
+        
 
     @abstractmethod
     def _consultar_datos(self):
         pass
 
-    @classmethod
+    
     @abstractmethod
-    def _actualizar_datos(cls, datos: dict[str, object]):
-        return NotImplementedError("Este método debe ser implementado en la subclase.")
+    def _actualizar_datos(self, datos: frozendict) -> str:
+        pass
+

@@ -1,21 +1,22 @@
-from Fuente.Clase.persona.empleado import Empleado 
+from Persona.empleado import Empleado 
 
 class Usuario:
 
     def __init__(
             self,
-                __id: int,
-                __nombre: str,
-                   __contrasena: str
-                   ):
-        self.__id = __id
-        self.__nombre = __nombre
-        self.__contrasena = __contrasena
+                id: int,
+                nombre: str,
+                   contrasena: str):
+        
+        self.__id = id
+        self.__nombre = nombre
+        self.__contrasena = contrasena
     
-    @property
     def _registro(self):
-        return self.__contraseña
+        return (
+            self.__id,
+            self.__nombre,
+            self.__contrasena)
     
     
 
-_SUPER_ADMIN = (Usuario(Empleado(1,'','',1,'','',''),'admin','admin'))

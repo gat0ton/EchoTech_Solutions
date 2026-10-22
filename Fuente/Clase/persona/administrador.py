@@ -1,42 +1,35 @@
 from .persona import Persona as p
 
-class administrador(p):
+class Administrador(p):
     def __init__(
-                self, __id: int, __nombre: str, __apellido: str, __edad: int, __genero: str, __telefono: str, __direccion: str,
-                    __correo: str,
-                    puesto: str,
-                    horas: int,
-                    salario: float,
-                    administrador: bool = True
-                 
-                 ):
-        
-        super().__init__(__id, __nombre, __apellido, __edad, __genero, __telefono, __direccion, __correo)
-        
-        self.__puesto = puesto
-        self.__horas = horas
-        self.__salario = salario
-        self.__administrador = administrador
+                    self, 
+                    __id: int, _nombre: str, _apellido: str, _edad: int, _genero: str, _telefono: str, _direccion: str, _correo: str, _horas: int, _salario: float,
+                    departamento: Departamento):
+            
+        super().__init__(__id, _nombre, _apellido, _edad, _genero, _telefono, _direccion, _correo, _horas, _salario)
 
+        self.__departamento = departamento
+
+    class DatosAdministrador(p.AbcDatos):
+        departamento: Departamento
     
     def __str__(self):
-        return f"""
-        {'='* 40}
-        Administrador: {self.__nombre} {self.__apellido}, 
-        ID: {self.__id},
-        Edad: {self.__edad},
-        Género: {self.__genero},
-        Teléfono: {self.__telefono},
-        Dirección: {self.__direccion},
-        Correo: {self.__correo},
-        Puesto: {self.__puesto}, 
-        Horas: {self.__horas}, 
-        Salario: {self.__salario}"""
+        return f"""{'='* 40}
+        Administrador: {self._nombre} {self._apellido}, 
+        ID: {self._id},
+        Edad: {self._edad},
+        Género: {self._genero},
+        Teléfono: {self._telefono},
+        Dirección: {self._direccion},
+        Correo: {self._correo},
+        Departamento: {self.__departamento}, 
+        Horas: {self._horas}, 
+        Salario: {self._salario}
+        {'='* 40}"""
 
     
     
-    @classmethod
-    def _actualizar_datos(cls, datos: dict[str, object]):
+    def _actualizar_datos(self, datos: dict[str, object]):
         for campo, valor in datos.items():
-            if hasattr(cls, campo):
-                setattr(cls, campo, valor)
+            if hasattr(self, campo):
+                setattr(self, campo, valor)

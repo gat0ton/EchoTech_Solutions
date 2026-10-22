@@ -1,40 +1,55 @@
 from .persona import Persona as p
+from Clase.Administracion.registro import Registro
+
 
 class Empleado(p):
     def __init__(
-                self, __id: int, __nombre: str, __apellido: str, __edad: int, __genero: str, __telefono: str, __direccion: str,
-                    __correo: str,
-                    puesto: str,
-                    horas: int,
-                    salario: float
+                self, _id: int, _nombre: str, _apellido: str, _edad: int, _genero: str, _telefono: str, _direccion: str,
+                    _correo: str,
+                    _horas: int,
+                    _salario: float,
+                    puesto: str
                  
                  ):
         
-        super().__init__(__id, __nombre, __apellido, __edad, __genero, __telefono, __direccion, __correo)
+        super().__init__(_id, _nombre, _apellido, _edad, _genero, _telefono, _direccion, _correo, _horas, _salario)
         
         self.__puesto = puesto
-        self.__horas = horas
-        self.__salario = salario
 
+    class DatosEmpleado(p.AbcDatos):
+        puesto: str
+
+    
     
     def __str__(self):
+        separador = '-' * 37
         return f"""
         {'='* 40}
-        Empleado: {self.__nombre} {self.__apellido}, 
-        ID: {self.__id},
-        Edad: {self.__edad},
-        Género: {self.__genero},
-        Teléfono: {self.__telefono},
-        Dirección: {self.__direccion},
-        Correo: {self.__correo},
+        Empleado: {self._nombre} {self._apellido}
+        {separador}
+        ID: {self._id}
+        {separador}
+        Edad: {self._edad}
+        {separador}
+        Género: {self._genero}
+        {separador}
+        Teléfono: {self._telefono},
+        Dirección: {self._direccion},
+        Correo: {self._correo},
         Puesto: {self.__puesto}, 
-        Horas: {self.__horas}, 
-        Salario: {self.__salario}"""
+        Horas: {self._horas}, 
+        Salario: {self._salario}"""
 
     
     
-    @classmethod
-    def _actualizar_datos(cls, datos: dict[str, object]):
+    def _actualizar_datos(self, datos: frozendict[str, object]):
         for campo, valor in datos.items():
-            if hasattr(cls, campo):
-                setattr(cls, campo, valor)
+            if hasattr(self, campo):
+                setattr(self, campo, valor)
+                return True
+            else:
+                return False
+    def __marcar(self, DatosRegistro : frozendict[str, object]):
+            fro
+            if hasattr(self) in DatosRegistro.items():
+                setattr()
