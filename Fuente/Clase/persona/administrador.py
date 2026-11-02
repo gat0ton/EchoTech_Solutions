@@ -1,30 +1,29 @@
-from .persona import Persona as p
+from persona import Persona as p
 
 class Administrador(p):
     def __init__(
                     self, 
-                    __id: int, _nombre: str, _apellido: str, _edad: int, _genero: str, _telefono: str, _direccion: str, _correo: str, _horas: int, _salario: float,
-                    departamento: Departamento):
+                    id: int, nombre: str, apellido: str, edad: int, genero: str, telefono: str, direccion: str, correo: str, horas: int, inicioContrato: str, salario: float, presupuesto: float):
             
-        super().__init__(__id, _nombre, _apellido, _edad, _genero, _telefono, _direccion, _correo, _horas, _salario)
-
-        self.__departamento = departamento
+        super().__init__(id, nombre, apellido, edad, genero, telefono, direccion, correo, horas, inicioContrato, salario)
+        self.__presupuesto = presupuesto
 
     class DatosAdministrador(p.AbcDatos):
-        departamento: Departamento
-    
+        presupuesto: float
+
     def __str__(self):
-        return f"""{'='* 40}
-        Administrador: {self._nombre} {self._apellido}, 
+        return f"""
+        Persona: {self._nombre} {self._apellido}, 
         ID: {self._id},
         Edad: {self._edad},
         Género: {self._genero},
         Teléfono: {self._telefono},
         Dirección: {self._direccion},
         Correo: {self._correo},
-        Departamento: {self.__departamento}, 
         Horas: {self._horas}, 
-        Salario: {self._salario}
+        Salario: {self._salario},
+        Inicio Contrato: {self._inicioContrato}
+        Presupuesto Asignado: {self.__presupuesto}
         {'='* 40}"""
 
     
@@ -33,3 +32,8 @@ class Administrador(p):
         for campo, valor in datos.items():
             if hasattr(self, campo):
                 setattr(self, campo, valor)
+                return True
+            else:
+                return False
+
+

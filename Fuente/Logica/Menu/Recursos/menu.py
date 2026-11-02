@@ -36,7 +36,7 @@ class Mensaje:
 
     @staticmethod
     def _mostrar(clave=None, nido=None, nombre=None, genero=None):
-        __diccionario = {
+        claves = {
             'aux': {
                 'opcion'          : "Ingrese una Opcion: ",
                 
@@ -61,6 +61,11 @@ class Mensaje:
                 
                 'contraseña_invalida': "Contraseña o ID invalidos, por favor vuelve a intentarlo."},
 
+            'signin' : {
+                'no_cuenta' : f"""Parece que es la primera vez que usas el programa. Por favor, registrate!
+                {'#'*40}
+                ##Recuerda que el primer usuario que registres debe ser administrador.##"""
+            },
 
             'usuario' :{
 
@@ -80,6 +85,9 @@ class Mensaje:
             'registro' :{
 
                 'opcion' : "Horas Trabajadas: "}}
+
+        __diccionario = frozendict(claves)
+        
         if nombre and genero == 'F':
                 return f"Bienvenida, {nombre}"
         elif  nombre and genero == 'H':

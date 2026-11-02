@@ -1,7 +1,10 @@
-from DTO.gestor_dto import Repositorio as rep
+from DTO.dto import RepositorioPersonas as Repositorio
 
 class Autenticador:
-    @staticmethod
-    def __login(id, contrasena):
-        if id and contrasena in rep._listas():
+
+    def _primer_signin():
+        if len(Repositorio.lista)
+    
+    def _login(id, contrasena):
+        if id and contrasena in Repositorio._listas():
             return True

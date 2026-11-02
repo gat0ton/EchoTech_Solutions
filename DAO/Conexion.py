@@ -2,36 +2,24 @@ import pymysql
 from contextlib import contextmanager
 
 class Conexion:
-
-    def __init__(self):
-        config = {
-                    'host'       : 'localhost',
-                    'port'       : int(3306),
-                    'user'       : 'admin',
-                    'password'   : '',
-                    'database'   : 'EchoTech Solutions',
-                    'autocommit' : False}
-
-        self.__config = config
-
-    @staticmethod
-    def _verificar_login(id, usuarios):
-        if id in usuarios:
-                return False
-        else:
-            return True
+    def __init__(self, host="localhost", user="root", password="", bdd="ECHOTECH_SOLUTIONS", port=3306):
+        # Agrupamos todos los parámetros en un diccionario de configuración
+        self.config = {
+            "host": host,
+            "user": user,
+            "password": password,
+            "database": bdd,      
+            "port": port,
+            "autocommit": False  
+        }
         
     @contextmanager
     def conectar(self):
-
-
         try:
             conexion = pymysql.connect(**self.__config)
 
-            print(self.mensajesBDD('conexion_e'))
-
             yield conexion
-
+        
         except Exception:
             self.rollback(conexion)
 

@@ -13,6 +13,7 @@ class Persona(ABC):
         direccion: str
         correo: str
         horas: int
+        inicioContrato: str
         salario: float
 
     @abstractmethod
@@ -27,6 +28,7 @@ class Persona(ABC):
         direccion: str,
         correo: str,
         horas: int,
+        inicioContrato: str,
         salario: float):
         
         self._id = id
@@ -38,13 +40,12 @@ class Persona(ABC):
         self._direccion = direccion
         self._correo = correo
         self._horas = horas
+        self._inicioContrato = inicioContrato
         self._salario = salario
 
         
-        
-
     @abstractmethod
-    def _consultar_datos(self):
+    def __str__(self) -> str:
         pass
 
     

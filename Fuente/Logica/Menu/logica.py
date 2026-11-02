@@ -3,8 +3,8 @@ from Fuente.Logica.Menu.Recursos.menu import Mensaje, Utilidades
 lazy from Fuente.Logica.Menu.Recursos.Seguridad.autenticador import Autenticador
 
 class Logica:
-    def principal():
 
+    def principal():
         while True:
             try:
                 Utilidades._limpiar()
@@ -16,14 +16,18 @@ class Logica:
                     __usuario = input(Mensaje._mostrar('login','usuario'))
                     __contrasena = input(Mensaje._mostrar('login','contraseña'))
 
-                    if Autenticador.__login(__usuario, __contrasena):
+                    if Autenticador._login(__usuario, __contrasena):
                         break
 
-                else:
+                elif opcion.strip() == "2":
                     Utilidades.salir()
                     exit()
 
-            except ValueError:
+                else:
+                    Utilidades._limpiar()
+                    Mensaje._mostrar('aux','opcion_invalida')
+
+            except Exception:
                 Utilidades._limpiar()
                 Mensaje._mostrar('aux','opcion_invalida')
 

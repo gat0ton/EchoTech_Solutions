@@ -1,6 +1,8 @@
 from .Menu.logica import Logica
 
 class Flujo:
-    def ejecutar():
+
+    @staticmethod
+    def _ejecutar():
         Logica.principal()
 

@@ -1,7 +1,12 @@
 from typing import TypedDict
 from abc import abstractmethod
 
-class Registro:    
+class Registro:
+    class DatosRegistro(TypedDict):
+        horas: int
+        fecha: str
+        entrada: bool
+
     def __init__(self,
                  horas: int,
                  fecha: str,
