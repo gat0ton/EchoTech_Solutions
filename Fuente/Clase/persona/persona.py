@@ -18,8 +18,7 @@ class Persona(ABC):
 
     @abstractmethod
     def __init__(
-            self,
-        id: int,
+            self, id: int,
         nombre: str,
         apellido: str,
         edad: int,

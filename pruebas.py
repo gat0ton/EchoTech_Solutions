@@ -36,5 +36,8 @@ class Conexion:
 
 conexion = Conexion()
 
-with conexion.conectar() as conn:
-    print("Conexión establecida con éxito.")
+def ahora():
+    with conexion.conectar() as conn:
+        print("Conexión establecida con éxito.")
+
+ahora()
