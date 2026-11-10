@@ -27,7 +27,7 @@ class Persona(ABC):
         direccion: str,
         correo: str,
         horas: int,
-        inicioContrato: str,
+        inicio_contrato: str,
         salario: float):
         
         self._id = id
@@ -39,7 +39,7 @@ class Persona(ABC):
         self._direccion = direccion
         self._correo = correo
         self._horas = horas
-        self._inicioContrato = inicioContrato
+        self._inicioContrato = inicio_contrato
         self._salario = salario
 
         

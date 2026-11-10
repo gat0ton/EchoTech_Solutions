@@ -1,5 +1,3 @@
-from Persona.empleado import Empleado 
-
 class Usuario:
 
     def __init__(
@@ -17,6 +15,13 @@ class Usuario:
             self.__id,
             self.__nombre,
             self.__contrasena)
+
+    def __str__(self):
+        return f"""
+        {'-'* 40}
+        Usuario: {self.__nombre}
+        ID: {self.__id}
+        {'-'* 40}"""
     
     
 

@@ -17,4 +17,13 @@ class Departamento:
     def agregar_empleado(self, empleado):
         self.empleados.append(empleado)
 
+    def __str__(self):
+        return f"""
+        {'-'* 40}
+        Departamento: {self.__nombre}
+        Gerente: {self.__gerente._nombre} {self.__gerente._apellido}
+        Empleados: {[empleado._nombre + ' ' + empleado._apellido for empleado in self.__empleados]}
+        Horas: {self.__horas}
+        {'-'* 40}"""
+
     
