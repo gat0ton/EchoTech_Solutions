@@ -1,4 +1,4 @@
-from DAO.usuario_dao import UsuarioDAO
+from Fuente.Persistencia.DAO.usuario_dao import UsuarioDAO
 class Autenticador:
 
     ROL_ADMIN = "admin"

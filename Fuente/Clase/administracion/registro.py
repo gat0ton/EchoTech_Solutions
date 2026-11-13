@@ -5,15 +5,12 @@ class Registro:
     class DatosRegistro(TypedDict):
         horas: int
         fecha: str
-        entrada: bool
 
     def __init__(self,
                  horas: int,
-                 fecha: str,
-                 entrada: bool):
+                 fecha: str):
         self.__horas = horas
         self.__fecha = fecha
-        self.__entrada = entrada
 
     
     def __str__(self):
@@ -21,7 +18,6 @@ class Registro:
         {'='* 40}
         Horas: {self.__horas}
         Fecha: {self.__fecha}
-        Entrada: {self.__entrada}
         """
         
         

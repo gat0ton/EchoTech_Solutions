@@ -14,7 +14,7 @@ class Administrador(p):
     def __str__(self):
         return f"""
         Persona: {self._nombre} {self._apellido}, 
-        ID: {self._id},
+        ID: {self._id}, 
         Edad: {self._edad},
         Género: {self._genero},
         Teléfono: {self._telefono},

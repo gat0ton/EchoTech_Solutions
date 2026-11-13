@@ -9,15 +9,13 @@ class Empleado(p):
                     _horas: int,
                     _salario: float,
                     puesto: str,
-                    registro: Registro
-                 
+                    registros: list
                  ):
         
         super().__init__(_id, _nombre, _apellido, _edad, _genero, _telefono, _direccion, _correo, _horas, _salario)
         
         self.__puesto = puesto
-        self.__registro = registro
-
+        self.__registros = registros 
     class DatosEmpleado(p.AbcDatos):
         puesto: str
 
@@ -36,9 +34,16 @@ class Empleado(p):
         Puesto: {self.__puesto}
         Horas: {self._horas}
         Salario: {self._salario}"""
+    
 
     
-    
+    def agregar_registro(self, horas,fecha):
+        registro = Registro(horas, fecha)
+        self.__registros.append(registro)
+
+    def obtener_registros(self):
+        return self.__registros
+
     def _actualizar_datos(self, datos: frozendict[str, object]):
         for campo, valor in datos.items():
             if hasattr(self, campo):

@@ -1,7 +1,7 @@
 from os import error
 
 from .Menu.logica import Logica
-from DAO.conexion import Conexion
+from Fuente.Persistencia.conexion import Conexion
 
 class Flujo:
 

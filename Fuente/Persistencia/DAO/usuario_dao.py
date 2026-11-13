@@ -1,4 +1,4 @@
-from conexion import Conexion, ErrorPersistencia
+from Fuente.Persistencia.conexion import Conexion, ErrorPersistencia
 from DTO.usuario_dto import UsuarioDTO
 import pymysql
 

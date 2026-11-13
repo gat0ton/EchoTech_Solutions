@@ -1,6 +1,6 @@
 lazy from sys import exit
-from Fuente.Logica.Menu.Recursos.menu import Mensaje, Utilidades
-lazy from Fuente.Logica.Menu.Recursos.Seguridad.autenticador import Autenticador
+from Fuente.Presentacion.Logica.Menu.Recursos.menu import Mensaje, Utilidades
+lazy from Fuente.Negocio.Servicios.autenticador import Autenticador
 
 class Logica:
 
@@ -61,22 +61,3 @@ class Logica:
             except ValueError:
                 Mensaje._mostrar('aux', 'opcion_invalida')
                 Utilidades._limpiar()
-
-        
-
-        
-
-        
-        
-
-
-        
-        
-        
-    
-
-
-        
-        
-        
-    
