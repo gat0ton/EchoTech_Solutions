@@ -2,18 +2,21 @@ class Usuario:
 
     def __init__(
             self,
-                id: int,
+                user: str,
                 nombre: str,
-                   contrasena: str):
+                rol: str,
+                contrasena: str):
         
-        self.__id = id
+        self.__user = user
         self.__nombre = nombre
+        self.__rol = rol
         self.__contrasena = contrasena
     
     def _registro(self):
         return (
-            self.__id,
+            self.__user,
             self.__nombre,
+            self.__rol,
             self.__contrasena)
 
     def __str__(self):

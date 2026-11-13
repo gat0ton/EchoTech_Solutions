@@ -4,6 +4,10 @@ from pathlib import Path
 import os
 import pymysql
 
+
+class ErrorPersistencia(RuntimeError):
+    """Implementacion de clase de error seguro para la capa de persistencia obtenida de la propuesta de login."""
+    
 class Conexion:
     def __init__(self):
 
@@ -13,7 +17,7 @@ class Conexion:
 
         
         # Agrupamos todos los parámetros desde el archivo de configuracion (.env) en un diccionario de configuración
-        self.config = {
+        self.__config = {
             "host": os.getenv("DB_HOST"),
             "user": os.getenv("DB_USER"),
             "password": os.getenv("DB_PASSWORD"),
@@ -22,10 +26,10 @@ class Conexion:
             "autocommit": False  
         }
 
-        if (not self.config["host"] or not self.config["user"] or self.config["password"] is None or not self.config["database"]):
+        if (not self.__config["host"] or not self.__config["user"] or self.__config["password"] is None or not self.__config["database"]):
             raise ValueError("La configuración está incompleta. Por favor, revisa .env")
         try:
-            int(self.config["port"] or "3306")#Transforma el puerto a entero, o lo deja por defecto (3306)
+            int(self.__config["port"] or "3306")#Transforma el puerto a entero, o lo deja por defecto (3306)
         except ValueError as error:
             raise ValueError("No se ha podidio validar el puerto.") from error
 
@@ -57,3 +61,6 @@ class Conexion:
 
     def rollback(self, conexion):
             conexion.rollback()
+
+    def desconectar(self, conexion):
+        conexion.close()

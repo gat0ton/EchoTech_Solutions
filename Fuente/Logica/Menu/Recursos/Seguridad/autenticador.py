@@ -1,10 +1,15 @@
-from DTO.dto import RepositorioPersonas as Repositorio
-
+from DAO.usuario_dao import UsuarioDAO
 class Autenticador:
 
-    def _primer_signin():
-        if len(Repositorio.lista)
+    ROL_ADMIN = "admin"
+    LARGO_MINIMO_CONTRASENA = 8
+
+    def existe_admin(self):
+        return self.usuario_dao.existeRol(self.ROL_ADMIN)
     
-    def _login(id, contrasena):
-        if id and contrasena in Repositorio._listas():
-            return True
+    def __init__(self, usuario_dao: UsuarioDAO):
+        self.usuario_dao = usuario_dao
+
+    def login(self, user: str, contrasena: str):
+        if user and contrasena:
+            return self.usuario_dao.rol_registrado(user, contrasena)
