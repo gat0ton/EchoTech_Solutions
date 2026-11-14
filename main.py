@@ -1,3 +1,4 @@
-from Fuente.Logica.flujo import Flujo
+from Presentación.flujo import Flujo
 
-Flujo.ejecutar()
+if __name__ == "__main__":
+    Flujo.main()

@@ -1,44 +1,12 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:system",
-    "cSpell.words": [
-        "actualizar",
-        "apellido",
-        "Bienvenido",
-        "CAMBIAR",
-        "Clase",
-        "consultar",
-        "contraseña",
-        "correo",
-        "datos",
-        "Desarrollador",
-        "direccion",
-        "Dirección",
-        "edad",
-        "Empleado",
-        "Fuente",
-        "incorrectos",
-        "informacion",
-        "Ingrese",
-        "intente",
-        "limpiar",
-        "mostrar",
-        "nombre",
-        "nuevo",
-        "opcion",
-        "opción",
-        "pantalla",
-        "programa",
-        "puesto",
-        "raiz",
-        "ruta",
-        "salario",
-        "Menu",
-        "Saliendo",
-        "Seleccione",
-        "telefono",
-        "Teléfono",
-        "uemp",
-        "Usuario",
-        "válida"
+    "python-envs.defaultEnvManager": "ms-python.python:venv",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "python.terminal.useEnvFile": true,
+    "python-envs.pythonProjects": [
+        {
+            "path": ".",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        }
     ]
 }
