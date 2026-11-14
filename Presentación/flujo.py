@@ -13,15 +13,12 @@ class Flujo:
             print(f"Error: {error}")
             return
 
-        # Persistencia → Negocio → Presentación: cada capa recibe la que está debajo (inyección de dependencias).
         usuario_dao = UsuarioDAO(conexion)
         servicio_autenticacion = ServicioAutenticacion(usuario_dao)
         login = Login(servicio_autenticacion)
 
-        # Si todavía no hay administrador (instalación nueva), se pide crearlo antes del inicio de sesión.
         try:
             hayAdministrador = servicio_autenticacion.existeAdministrador()
-        # ErrorPersistencia hereda de RuntimeError.
         except RuntimeError:
             print("Error al acceder a la base de datos. Revise la configuración del archivo .env.")
             return
@@ -30,8 +27,7 @@ class Flujo:
             print("\nNo es posible usar el sistema sin un administrador. Saliendo...")
             return
 
-        # Al cerrar sesión se vuelve al inicio de sesión para que otra persona pueda entrar.
-        # El programa termina si se cancela el login, se agotan los intentos o falla la base de datos.
+        
         while True:
             usuario = login.iniciarSesion()
 
