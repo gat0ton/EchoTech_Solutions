@@ -1,6 +1,7 @@
 from Presentación.login import Login
 from Persistencia.DAO.conexion import ConexionBD
 from Persistencia.DAO.usuario_dao import UsuarioDAO
+from Persistencia.DAO.empleado_dao import EmpleadoDAO
 from Presentación.menu_principal import MenuPrincipal
 from Negocio.Servicios.servicios_autenticacion import ServicioAutenticacion
 
@@ -14,7 +15,8 @@ class Flujo:
             return
 
         usuario_dao = UsuarioDAO(conexion)
-        servicio_autenticacion = ServicioAutenticacion(usuario_dao)
+        empleado_dao = EmpleadoDAO(conexion)
+        servicio_autenticacion = ServicioAutenticacion(usuario_dao, empleado_dao)
         login = Login(servicio_autenticacion)
 
         try:

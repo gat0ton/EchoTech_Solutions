@@ -32,12 +32,9 @@ class Empleado(p):
     
 
     
-    def agregar_registro(self, horas,fecha):
-        registro = Registro(horas, fecha)
-        self.__registros.append(registro)
+    
 
-    def obtener_registros(self):
-        return self.__registros
+    
 
     def _actualizar_datos(self, datos: frozendict[str, object]):
         for campo, valor in datos.items():

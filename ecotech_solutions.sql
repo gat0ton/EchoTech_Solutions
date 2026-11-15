@@ -13,3 +13,17 @@ CREATE TABLE IF NOT EXISTS usuario (
     -- Solo se aceptan los roles que reconoce la clase Usuario.
     CONSTRAINT chk_usuario_rol CHECK (rol IN ('Administrador', 'Empleado'))
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS empleado (
+    id         INT PRIMARY KEY,
+    nombre     VARCHAR(100) NOT NULL,
+    apellido   VARCHAR(100) NOT NULL,
+    edad       INT NOT NULL,
+    genero     VARCHAR(30) NOT NULL,
+    telefono   VARCHAR(30) NOT NULL,
+    direccion  VARCHAR(255) NOT NULL,
+    correo     VARCHAR(150) NOT NULL,
+    horas      INT NOT NULL DEFAULT 0,
+    salario    DECIMAL(12, 2) NOT NULL,
+    puesto     VARCHAR(100) NOT NULL
+) ENGINE = InnoDB;

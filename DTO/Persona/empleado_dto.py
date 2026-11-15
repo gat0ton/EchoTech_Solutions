@@ -16,5 +16,3 @@ class EmpleadoDTO:
         self.horas = _horas
         self.salario = _salario
         self.puesto = puesto
-
-    

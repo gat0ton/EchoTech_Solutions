@@ -1,5 +1,6 @@
 import getpass
 import time
+from DTO.Persona.empleado_dto import EmpleadoDTO
 
 
 class Login:
@@ -49,23 +50,61 @@ class Login:
         return None
 
     def crearPrimerAdministrador(self):
-        print("\n" + "*" * 44)
+        print("\n" + "=" * 44)
         print("ECOTECH SOLUTIONS".center(44))
         print("CONFIGURACIÓN INICIAL".center(44))
-        print("*" * 44)
+        print("=" * 44)
         print("El sistema no tiene administradores.")
         print("Cree el usuario administrador para comenzar.\n")
 
         try:
             username = input("Nombre de usuario: ").strip()
-            clave = getpass.getpass("Contraseña (mínimo 8 caracteres, con letras y números): ")
-            confirmacion = getpass.getpass("Repita la contraseña: ")
+            id_empleado = input("ID de empleado: ").strip()
+            nombre = input("Nombre: ").strip()
+            apellido = input("Apellido: ").strip()
+            edad = input("Edad: ").strip()
+            genero = input("Genero: ").strip()
+            telefono = input("Telefono (+56 ): ").strip()
+            direccion = input("Direccion: ").strip()
+            correo = input("Correo: ").strip()
+            salario = input("Salario: ").strip()
+            puesto = input("Puesto: ").strip()
         except (EOFError, KeyboardInterrupt):
             print("\nConfiguración cancelada.")
             return False
 
+        while True:
+            try:
+                clave = getpass.getpass("Contraseña (mínimo 8 caracteres, con letras y números): ")
+                confirmacion = getpass.getpass("Repita la contraseña: ")
+                self.servicio.validarClave(clave, confirmacion)
+                break
+            except ValueError as error:
+                print(f"\n{error}\nIntente nuevamente la contraseña.")
+            except (EOFError, KeyboardInterrupt):
+                print("\nConfiguración cancelada.")
+                return False
+
         try:
-            self.servicio.registrarPrimerAdministrador(username, clave, confirmacion)
+            empleado = EmpleadoDTO(
+                int(id_empleado),
+                nombre,
+                apellido,
+                int(edad),
+                genero,
+                telefono,
+                direccion,
+                correo,
+                0,
+                float(salario),
+                puesto,
+            )
+            self.servicio.registrarPrimerAdministrador(
+                username,
+                clave,
+                confirmacion,
+                empleado,
+            )
         except (ValueError, PermissionError) as error:
             print(f"\n{error}")
             return False
