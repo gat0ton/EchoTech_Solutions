@@ -25,5 +25,18 @@ CREATE TABLE IF NOT EXISTS empleado (
     correo     VARCHAR(150) NOT NULL,
     horas      INT NOT NULL DEFAULT 0,
     salario    DECIMAL(12, 2) NOT NULL,
-    puesto     VARCHAR(100) NOT NULL
+    puesto     VARCHAR(100) NOT NULL,
+    username   VARCHAR(50) UNIQUE,
+    departamento VARCHAR(100)
+) ENGINE = InnoDB;
+
+-- Compatibilidad con instalaciones anteriores que no tenían estas columnas.
+ALTER TABLE empleado
+    ADD COLUMN IF NOT EXISTS username VARCHAR(50) UNIQUE,
+    ADD COLUMN IF NOT EXISTS departamento VARCHAR(100);
+
+CREATE TABLE IF NOT EXISTS departamento (
+    nombre          VARCHAR(100) PRIMARY KEY,
+    descripcion     VARCHAR(255) NOT NULL,
+    responsable_id  INT NOT NULL
 ) ENGINE = InnoDB;

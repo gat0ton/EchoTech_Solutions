@@ -3,7 +3,9 @@ class EmpleadoDTO:
                         _correo: str,
                         _horas: int,
                         _salario: float,
-                        puesto: str
+                        puesto: str,
+                        username: str = None,
+                        departamento: str = None
                      ):
         self.id = _id
         self.nombre = _nombre
@@ -16,3 +18,5 @@ class EmpleadoDTO:
         self.horas = _horas
         self.salario = _salario
         self.puesto = puesto
+        self.username = username
+        self.departamento = departamento

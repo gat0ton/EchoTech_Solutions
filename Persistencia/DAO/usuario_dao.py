@@ -60,6 +60,21 @@ class UsuarioDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible actualizar la contraseña.") from error
 
+    def actualizarUsername(self, username, nuevo_username):
+        try:
+            with self.conexion.conectar() as conexion_activa:
+                cursor = self.conexion.ejecuta_query(
+                    conexion_activa,
+                    "UPDATE usuario SET username = %s WHERE username = %s",
+                    (nuevo_username, username),
+                )
+                try:
+                    self.conexion.commit(conexion_activa)
+                finally:
+                    cursor.close()
+        except pymysql.MySQLError as error:
+            raise ErrorPersistencia("No fue posible actualizar el nombre de usuario.") from error
+
     def existeRol(self, rol):
         try:
             with self.conexion.conectar() as conexion_activa:                           

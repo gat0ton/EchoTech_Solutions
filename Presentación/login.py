@@ -98,6 +98,7 @@ class Login:
                 0,
                 float(salario),
                 puesto,
+                username,
             )
             self.servicio.registrarPrimerAdministrador(
                 username,

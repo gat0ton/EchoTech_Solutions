@@ -8,11 +8,12 @@ LARGO_MINIMO_CLAVE = 8
 # Negocio: recibe las peticiones de la presentación, aplica las reglas y usa el DAO para leer o guardar.
 class ServicioAutenticacion:
 
-    def __init__(self, usuario_dao, empleado_dao=None):
+    def __init__(self, usuario_dao, empleado_dao=None, departamento_dao=None):
         if usuario_dao is None:
             raise ValueError("ServicioAutenticacion necesita un DAO de usuarios.")
         self.usuario_dao = usuario_dao
         self.empleado_dao = empleado_dao
+        self.departamento_dao = departamento_dao
         self._verificador = VerificadorPassword()
 
     def autenticarUsuario(self, username, clave):
@@ -38,6 +39,70 @@ class ServicioAutenticacion:
             raise PermissionError("No tiene autorización para registrar usuarios.")
 
         self._registrar(username, clave, confirmacion, rol)
+
+    def registrarEmpleado(self, usuario_sesion, empleado_dto, clave, confirmacion):
+        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion("registrar_empleado"):
+            raise PermissionError("No tiene autorización para registrar empleados.")
+        if self.empleado_dao is None:
+            raise ValueError("No hay un DAO de empleados configurado.")
+        if not empleado_dto.username:
+            raise ValueError("El nombre de usuario es obligatorio.")
+        self._validarClave(clave, confirmacion)
+        rol = "Administrador" if empleado_dto.puesto.lower().startswith(
+            ("administrador", "gerente")
+        ) else "Empleado"
+        self._registrar(empleado_dto.username, clave, confirmacion, rol)
+        self.empleado_dao.agregar(empleado_dto)
+
+    def actualizarMiEmpleado(self, usuario_sesion, nuevo_username, telefono, direccion, correo):
+        if self.empleado_dao is None:
+            raise ValueError("No hay un DAO de empleados configurado.")
+        empleado = self.empleado_dao.buscarPorUsername(usuario_sesion.obtenerIdentidad())
+        if empleado is None:
+            raise ValueError("No existe una ficha asociada al usuario.")
+        if not nuevo_username:
+            raise ValueError("El nombre de usuario es obligatorio.")
+        username_anterior = usuario_sesion.obtenerIdentidad()
+        self.empleado_dao.actualizarContacto(
+            username_anterior, nuevo_username, telefono, direccion, correo
+        )
+        self.usuario_dao.actualizarUsername(username_anterior, nuevo_username)
+        usuario_sesion.actualizarIdentidad(nuevo_username)
+
+    def registrarDepartamento(self, usuario_sesion, departamento):
+        self._validarGestionDepartamentos(usuario_sesion, departamento.responsable_id)
+        if self.departamento_dao is None:
+            raise ValueError("No hay un DAO de departamentos configurado.")
+        self.departamento_dao.agregar(departamento)
+
+    def actualizarDepartamento(self, usuario_sesion, nombre, descripcion, responsable_id):
+        self._validarGestionDepartamentos(usuario_sesion, responsable_id)
+        if self.departamento_dao is None:
+            raise ValueError("No hay un DAO de departamentos configurado.")
+        self.departamento_dao.actualizar(nombre, descripcion, responsable_id)
+
+    def _validarGestionDepartamentos(self, usuario_sesion, responsable_id):
+        if usuario_sesion is None:
+            raise PermissionError("Se necesita una sesión para modificar departamentos.")
+        if self.empleado_dao is None:
+            raise ValueError("No hay un DAO de empleados configurado.")
+        empleado_actual = self.empleado_dao.buscarPorUsername(
+            usuario_sesion.obtenerIdentidad()
+        )
+        if (
+            empleado_actual is None
+            or not empleado_actual.puesto.lower().startswith(("administrador", "gerente"))
+        ):
+            raise PermissionError(
+                "Solo un administrador o gerente puede modificar departamentos."
+            )
+        responsable = self.empleado_dao.buscarPorId(responsable_id)
+        if responsable is None or not responsable[1].lower().startswith(
+            ("administrador", "gerente")
+        ):
+            raise ValueError(
+                "El responsable debe tener puesto de Administrador o Gerente."
+            )
 
     def existeAdministrador(self):
         # Permite a Main saber si hace falta la configuración inicial.

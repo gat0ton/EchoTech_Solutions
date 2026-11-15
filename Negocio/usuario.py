@@ -4,6 +4,7 @@ class Usuario:
         "Administrador": {
             "registrar_usuario",
             "registrar_empleado",
+            "modificar_mis_datos",
             "modificar_salario",
             "crear_departamento",
             "editar_departamento",
@@ -25,6 +26,7 @@ class Usuario:
             "ver_contacto",
             "ver_ficha",
             "registrar_horas",
+            "modificar_mis_datos",
         },
     }
 
@@ -53,6 +55,9 @@ class Usuario:
 
     def obtenerIdentidad(self):
         return self._username
+
+    def actualizarIdentidad(self, username):
+        self._username = username
 
     def obtenerRol(self):
         return self._rol
