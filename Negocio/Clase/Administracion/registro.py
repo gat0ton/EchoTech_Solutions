@@ -23,6 +23,18 @@ class Registro:
         ID Asociado: {self.__id_asociado}
         {'='* 40}
         """
+
+    @property
+    def horas(self):
+        return self.__horas
+
+    @property
+    def fecha(self):
+        return self.__fecha
+
+    @property
+    def id_asociado(self):
+        return self.__id_asociado
         
         
         

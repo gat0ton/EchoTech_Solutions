@@ -73,11 +73,17 @@ class Login:
             print("\nConfiguración cancelada.")
             return False
 
+        clave = None
+        confirmacion = None
         while True:
             try:
-                clave = getpass.getpass("Contraseña (mínimo 8 caracteres, con letras y números): ")
-                confirmacion = getpass.getpass("Repita la contraseña: ")
-                self.servicio.validarClave(clave, confirmacion)
+                nueva_clave = getpass.getpass(
+                    "Contraseña (mínimo 8 caracteres, con letras y números): "
+                )
+                nueva_confirmacion = getpass.getpass("Repita la contraseña: ")
+                self.servicio.validarClave(nueva_clave, nueva_confirmacion)
+                clave = nueva_clave
+                confirmacion = nueva_confirmacion
                 break
             except ValueError as error:
                 print(f"\n{error}\nIntente nuevamente la contraseña.")

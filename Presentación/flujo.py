@@ -3,6 +3,7 @@ from Persistencia.DAO.conexion import ConexionBD
 from Persistencia.DAO.usuario_dao import UsuarioDAO
 from Persistencia.DAO.empleado_dao import EmpleadoDAO
 from Persistencia.DAO.departamento_dao import DepartamentoDAO
+from Persistencia.DAO.proyecto_dao import ProyectoDAO
 from Presentación.menu_principal import MenuPrincipal
 from Negocio.Servicios.servicios_autenticacion import ServicioAutenticacion
 
@@ -18,8 +19,9 @@ class Flujo:
         usuario_dao = UsuarioDAO(conexion)
         empleado_dao = EmpleadoDAO(conexion)
         departamento_dao = DepartamentoDAO(conexion)
+        proyecto_dao = ProyectoDAO(conexion)
         servicio_autenticacion = ServicioAutenticacion(
-            usuario_dao, empleado_dao, departamento_dao
+            usuario_dao, empleado_dao, departamento_dao, proyecto_dao
         )
         login = Login(servicio_autenticacion)
 

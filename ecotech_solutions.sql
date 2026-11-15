@@ -40,3 +40,42 @@ CREATE TABLE IF NOT EXISTS departamento (
     descripcion     VARCHAR(255) NOT NULL,
     responsable_id  INT NOT NULL
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS registro (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    horas           INT NOT NULL,
+    fecha           DATE NOT NULL,
+    id_asociado     INT NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS proyecto (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    nombre              VARCHAR(150) NOT NULL,
+    departamento_nombre VARCHAR(100) NOT NULL,
+    registro_id         INT NOT NULL,
+    pais                VARCHAR(100) NOT NULL,
+    presupuesto_clp     DECIMAL(15, 2) NOT NULL,
+    moneda              CHAR(3) NOT NULL,
+    presupuesto_local   DECIMAL(15, 2) NOT NULL,
+    tasa_conversion     DECIMAL(20, 10) NOT NULL,
+    CONSTRAINT fk_proyecto_departamento
+        FOREIGN KEY (departamento_nombre) REFERENCES departamento(nombre),
+    CONSTRAINT fk_proyecto_registro
+        FOREIGN KEY (registro_id) REFERENCES registro(id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS proyecto_registro (
+    proyecto_id INT NOT NULL,
+    registro_id INT NOT NULL,
+    PRIMARY KEY (proyecto_id, registro_id),
+    FOREIGN KEY (proyecto_id) REFERENCES proyecto(id),
+    FOREIGN KEY (registro_id) REFERENCES registro(id)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS proyecto_empleado (
+    proyecto_id INT NOT NULL,
+    empleado_id INT NOT NULL,
+    PRIMARY KEY (proyecto_id, empleado_id),
+    FOREIGN KEY (proyecto_id) REFERENCES proyecto(id),
+    FOREIGN KEY (empleado_id) REFERENCES empleado(id)
+) ENGINE = InnoDB;

@@ -1,5 +1,9 @@
 from Negocio.Servicios.verificador_password import VerificadorPassword
 from DTO.usuario_dto import UsuarioDTO
+from DTO.Administracion.proyecto_dto import ProyectoDTO
+from Negocio.Clase.Administracion.proyecto import Proyecto
+from Negocio.Clase.Administracion.registro import Registro
+from Negocio.Servicios.api_moneda import API
 from Negocio.usuario import Usuario
 
 ROL_ADMINISTRADOR = "Administrador"
@@ -8,13 +12,33 @@ LARGO_MINIMO_CLAVE = 8
 # Negocio: recibe las peticiones de la presentación, aplica las reglas y usa el DAO para leer o guardar.
 class ServicioAutenticacion:
 
-    def __init__(self, usuario_dao, empleado_dao=None, departamento_dao=None):
+    def __init__(
+        self, usuario_dao, empleado_dao=None, departamento_dao=None, proyecto_dao=None
+    ):
         if usuario_dao is None:
             raise ValueError("ServicioAutenticacion necesita un DAO de usuarios.")
         self.usuario_dao = usuario_dao
         self.empleado_dao = empleado_dao
         self.departamento_dao = departamento_dao
+        self.proyecto_dao = proyecto_dao
         self._verificador = VerificadorPassword()
+        self._api_moneda = API()
+
+    _MONEDAS_POR_PAIS = {
+        "argentina": "ARS",
+        "brasil": "BRL",
+        "canada": "CAD",
+        "chile": "CLP",
+        "colombia": "COP",
+        "españa": "EUR",
+        "espana": "EUR",
+        "estados unidos": "USD",
+        "méxico": "MXN",
+        "mexico": "MXN",
+        "perú": "PEN",
+        "peru": "PEN",
+        "uruguay": "UYU",
+    }
 
     def autenticarUsuario(self, username, clave):
         if not username or not clave:
@@ -80,6 +104,80 @@ class ServicioAutenticacion:
         if self.departamento_dao is None:
             raise ValueError("No hay un DAO de departamentos configurado.")
         self.departamento_dao.actualizar(nombre, descripcion, responsable_id)
+
+    def registrarProyecto(self, usuario_sesion, proyecto_dto: ProyectoDTO):
+        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion(
+            "crear_proyecto"
+        ):
+            raise PermissionError("No tiene autorización para registrar proyectos.")
+        if self.proyecto_dao is None:
+            raise ValueError("No hay un DAO de proyectos configurado.")
+
+        pais = proyecto_dto.pais.strip()
+        moneda = self._MONEDAS_POR_PAIS.get(pais.casefold())
+        if moneda is None:
+            raise ValueError("No hay una moneda configurada para ese país.")
+
+        conversion = self._api_moneda.convertir_clp(proyecto_dto.presupuesto_clp, moneda)
+        registro = Registro(
+            proyecto_dto.registro_horas,
+            proyecto_dto.registro_fecha,
+            proyecto_dto.registro_id_asociado,
+        )
+        proyecto = Proyecto(
+            proyecto_dto.nombre,
+            proyecto_dto.departamento_nombre,
+            registro,
+            pais,
+            conversion["monto_clp"],
+            conversion["moneda_destino"],
+            conversion["monto_convertido"],
+            conversion["tasa"],
+        )
+        return self.proyecto_dao.agregar(
+            ProyectoDTO(
+                proyecto.nombre,
+                proyecto.departamento,
+                proyecto.registro.horas,
+                proyecto.registro.fecha,
+                proyecto.registro.id_asociado,
+                proyecto.pais,
+                proyecto.presupuesto_clp,
+                proyecto.moneda,
+                proyecto.presupuesto_local,
+                proyecto.tasa_conversion,
+            )
+        )
+
+    def consultarProyecto(self, usuario_sesion, proyecto_id):
+        self._validarConsultaProyecto(usuario_sesion)
+        proyecto = self.proyecto_dao.buscarDetalle(proyecto_id)
+        if proyecto is None:
+            raise ValueError("No existe un proyecto con ese ID.")
+        return proyecto
+
+    def consultarHistorialProyecto(self, usuario_sesion, proyecto_id):
+        self._validarConsultaProyecto(usuario_sesion)
+        if self.proyecto_dao.buscarDetalle(proyecto_id) is None:
+            raise ValueError("No existe un proyecto con ese ID.")
+        return self.proyecto_dao.historialRegistros(proyecto_id)
+
+    def asociarEmpleadoProyecto(self, usuario_sesion, proyecto_id, empleado_id):
+        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion(
+            "asignar_proyecto"
+        ):
+            raise PermissionError("No tiene autorización para asociar empleados.")
+        if self.proyecto_dao is None:
+            raise ValueError("No hay un DAO de proyectos configurado.")
+        self.proyecto_dao.asociarEmpleado(proyecto_id, empleado_id)
+
+    def _validarConsultaProyecto(self, usuario_sesion):
+        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion(
+            "consultar_proyecto"
+        ):
+            raise PermissionError("No tiene autorización para consultar proyectos.")
+        if self.proyecto_dao is None:
+            raise ValueError("No hay un DAO de proyectos configurado.")
 
     def _validarGestionDepartamentos(self, usuario_sesion, responsable_id):
         if usuario_sesion is None:

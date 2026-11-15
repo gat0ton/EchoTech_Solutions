@@ -20,6 +20,8 @@ class Usuario:
             "desasignar_proyecto",
             
             "generar_informes",
+            "consultar_proyecto",
+            "historial_registros",
         },
         "Empleado": {
             "ver_perfil",
