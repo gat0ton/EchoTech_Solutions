@@ -12,7 +12,7 @@ class Login:
             raise ValueError("Login necesita un servicio de autenticación")
         self.servicio = servicio_autenticacion
 
-    def iniciarSesion(self):
+    def iniciar_sesion(self):
         for restantes in range(self._INTENTOS - 1, -1, -1):
             print("\n" + "*" * 36)
             print("ECOTECH SOLUTIONS".center(36))
@@ -31,7 +31,7 @@ class Login:
                 continue
 
             try:
-                usuario = self.servicio.autenticarUsuario(username, clave)
+                usuario = self.servicio.autenticar_usuario(username, clave)
             except RuntimeError:
                 return None
 
@@ -49,7 +49,7 @@ class Login:
         print("\nSe alcanzó el máximo de intentos. Acceso denegado.")
         return None
 
-    def crearPrimerAdministrador(self):
+    def crear_primer_administrador(self):
         print("\n" + "=" * 44)
         print("ECOTECH SOLUTIONS".center(44))
         print("CONFIGURACIÓN INICIAL".center(44))
@@ -81,7 +81,7 @@ class Login:
                     "Contraseña (mínimo 8 caracteres, con letras y números): "
                 )
                 nueva_confirmacion = getpass.getpass("Repita la contraseña: ")
-                self.servicio.validarClave(nueva_clave, nueva_confirmacion)
+                self.servicio.validar_clave(nueva_clave, nueva_confirmacion)
                 clave = nueva_clave
                 confirmacion = nueva_confirmacion
                 break
@@ -106,7 +106,7 @@ class Login:
                 puesto,
                 username,
             )
-            self.servicio.registrarPrimerAdministrador(
+            self.servicio.registrar_primer_administrador(
                 username,
                 clave,
                 confirmacion,

@@ -45,7 +45,7 @@ class EmpleadoDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible registrar el empleado.") from error
 
-    def buscarPorUsername(self, username):
+    def buscar_por_username(self, username):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(
@@ -67,7 +67,7 @@ class EmpleadoDAO:
 
         return None if fila is None else EmpleadoDTO(*fila)
 
-    def actualizarContacto(self, username, nuevo_username, telefono, direccion, correo):
+    def actualizar_contacto(self, username, nuevo_username, telefono, direccion, correo):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(
@@ -86,7 +86,7 @@ class EmpleadoDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible actualizar el empleado.") from error
 
-    def buscarPorId(self, empleado_id):
+    def buscar_por_id(self, empleado_id):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(

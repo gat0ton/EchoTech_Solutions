@@ -40,12 +40,12 @@ class ServicioAutenticacion:
         "uruguay": "UYU",
     }
 
-    def autenticarUsuario(self, username, clave):
+    def autenticar_usuario(self, username, clave):
         if not username or not clave:
             return None
 
         # Negocio → Persistencia: el DAO busca el usuario y lo devuelve como DTO.
-        dto = self.usuario_dao.buscarPorUsername(username)
+        dto = self.usuario_dao.buscar_por_username(username)
         if dto is None:
             return None
 
@@ -53,60 +53,60 @@ class ServicioAutenticacion:
         usuario = Usuario(dto.username, dto.passwordHash, dto.rol)
 
         #  El servicio calcula el hash de la clave ingresada con la misma salt del hash guardado;el dominio lo compara y activa la sesión.
-        if usuario.autenticar(username, self._verificador.generarComoGuardado(clave, dto.passwordHash)):
+        if usuario.autenticar(username, self._verificador.generar_como_guardado(clave, dto.passwordHash)):
             return usuario
         return None
 
-    def registrarUsuario(self, usuario_sesion, username, clave, confirmacion, rol):
+    def registrar_usuario(self, usuario_sesion, username, clave, confirmacion, rol):
         # La presentación ya oculta la opción a quien no tiene permiso, pero la regla de seguridad real está aquí: ninguna capa puede registrar usuarios sin una sesión autorizada.
-        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion("registrar_usuario"):
+        if usuario_sesion is None or not usuario_sesion.verificar_autorizacion("registrar_usuario"):
             raise PermissionError("No tiene autorización para registrar usuarios.")
 
         self._registrar(username, clave, confirmacion, rol)
 
-    def registrarEmpleado(self, usuario_sesion, empleado_dto, clave, confirmacion):
-        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion("registrar_empleado"):
+    def registrar_empleado(self, usuario_sesion, empleado_dto, clave, confirmacion):
+        if usuario_sesion is None or not usuario_sesion.verificar_autorizacion("registrar_empleado"):
             raise PermissionError("No tiene autorización para registrar empleados.")
         if self.empleado_dao is None:
             raise ValueError("No hay un DAO de empleados configurado.")
         if not empleado_dto.username:
             raise ValueError("El nombre de usuario es obligatorio.")
-        self._validarClave(clave, confirmacion)
+        self._validar_clave(clave, confirmacion)
         rol = "Administrador" if empleado_dto.puesto.lower().startswith(
             ("administrador", "gerente")
         ) else "Empleado"
         self._registrar(empleado_dto.username, clave, confirmacion, rol)
         self.empleado_dao.agregar(empleado_dto)
 
-    def actualizarMiEmpleado(self, usuario_sesion, nuevo_username, telefono, direccion, correo):
+    def actualizar_mi_empleado(self, usuario_sesion, nuevo_username, telefono, direccion, correo):
         if self.empleado_dao is None:
             raise ValueError("No hay un DAO de empleados configurado.")
-        empleado = self.empleado_dao.buscarPorUsername(usuario_sesion.obtenerIdentidad())
+        empleado = self.empleado_dao.buscar_por_username(usuario_sesion.obtener_identidad())
         if empleado is None:
             raise ValueError("No existe una ficha asociada al usuario.")
         if not nuevo_username:
             raise ValueError("El nombre de usuario es obligatorio.")
-        username_anterior = usuario_sesion.obtenerIdentidad()
-        self.empleado_dao.actualizarContacto(
+        username_anterior = usuario_sesion.obtener_identidad()
+        self.empleado_dao.actualizar_contacto(
             username_anterior, nuevo_username, telefono, direccion, correo
         )
-        self.usuario_dao.actualizarUsername(username_anterior, nuevo_username)
-        usuario_sesion.actualizarIdentidad(nuevo_username)
+        self.usuario_dao.actualizar_username(username_anterior, nuevo_username)
+        usuario_sesion.actualizar_identidad(nuevo_username)
 
-    def registrarDepartamento(self, usuario_sesion, departamento):
-        self._validarGestionDepartamentos(usuario_sesion, departamento.responsable_id)
+    def registrar_departamento(self, usuario_sesion, departamento):
+        self._validar_gestion_departamentos(usuario_sesion, departamento.responsable_id)
         if self.departamento_dao is None:
             raise ValueError("No hay un DAO de departamentos configurado.")
         self.departamento_dao.agregar(departamento)
 
-    def actualizarDepartamento(self, usuario_sesion, nombre, descripcion, responsable_id):
-        self._validarGestionDepartamentos(usuario_sesion, responsable_id)
+    def actualizar_departamento(self, usuario_sesion, nombre, descripcion, responsable_id):
+        self._validar_gestion_departamentos(usuario_sesion, responsable_id)
         if self.departamento_dao is None:
             raise ValueError("No hay un DAO de departamentos configurado.")
         self.departamento_dao.actualizar(nombre, descripcion, responsable_id)
 
-    def registrarProyecto(self, usuario_sesion, proyecto_dto: ProyectoDTO):
-        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion(
+    def registrar_proyecto(self, usuario_sesion, proyecto_dto: ProyectoDTO):
+        if usuario_sesion is None or not usuario_sesion.verificar_autorizacion(
             "crear_proyecto"
         ):
             raise PermissionError("No tiene autorización para registrar proyectos.")
@@ -149,43 +149,43 @@ class ServicioAutenticacion:
             )
         )
 
-    def consultarProyecto(self, usuario_sesion, proyecto_id):
-        self._validarConsultaProyecto(usuario_sesion)
-        proyecto = self.proyecto_dao.buscarDetalle(proyecto_id)
+    def consultar_proyecto(self, usuario_sesion, proyecto_id):
+        self._validar_consulta_proyecto(usuario_sesion)
+        proyecto = self.proyecto_dao.buscar_detalle(proyecto_id)
         if proyecto is None:
             raise ValueError("No existe un proyecto con ese ID.")
         return proyecto
 
-    def consultarHistorialProyecto(self, usuario_sesion, proyecto_id):
-        self._validarConsultaProyecto(usuario_sesion)
-        if self.proyecto_dao.buscarDetalle(proyecto_id) is None:
+    def consultar_historial_proyecto(self, usuario_sesion, proyecto_id):
+        self._validar_consulta_proyecto(usuario_sesion)
+        if self.proyecto_dao.buscar_detalle(proyecto_id) is None:
             raise ValueError("No existe un proyecto con ese ID.")
-        return self.proyecto_dao.historialRegistros(proyecto_id)
+        return self.proyecto_dao.historial_registros(proyecto_id)
 
-    def asociarEmpleadoProyecto(self, usuario_sesion, proyecto_id, empleado_id):
-        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion(
+    def asociar_empleado_proyecto(self, usuario_sesion, proyecto_id, empleado_id):
+        if usuario_sesion is None or not usuario_sesion.verificar_autorizacion(
             "asignar_proyecto"
         ):
             raise PermissionError("No tiene autorización para asociar empleados.")
         if self.proyecto_dao is None:
             raise ValueError("No hay un DAO de proyectos configurado.")
-        self.proyecto_dao.asociarEmpleado(proyecto_id, empleado_id)
+        self.proyecto_dao.asociar_empleado(proyecto_id, empleado_id)
 
-    def _validarConsultaProyecto(self, usuario_sesion):
-        if usuario_sesion is None or not usuario_sesion.verificarAutorizacion(
+    def _validar_consulta_proyecto(self, usuario_sesion):
+        if usuario_sesion is None or not usuario_sesion.verificar_autorizacion(
             "consultar_proyecto"
         ):
             raise PermissionError("No tiene autorización para consultar proyectos.")
         if self.proyecto_dao is None:
             raise ValueError("No hay un DAO de proyectos configurado.")
 
-    def _validarGestionDepartamentos(self, usuario_sesion, responsable_id):
+    def _validar_gestion_departamentos(self, usuario_sesion, responsable_id):
         if usuario_sesion is None:
             raise PermissionError("Se necesita una sesión para modificar departamentos.")
         if self.empleado_dao is None:
             raise ValueError("No hay un DAO de empleados configurado.")
-        empleado_actual = self.empleado_dao.buscarPorUsername(
-            usuario_sesion.obtenerIdentidad()
+        empleado_actual = self.empleado_dao.buscar_por_username(
+            usuario_sesion.obtener_identidad()
         )
         if (
             empleado_actual is None
@@ -194,7 +194,7 @@ class ServicioAutenticacion:
             raise PermissionError(
                 "Solo un administrador o gerente puede modificar departamentos."
             )
-        responsable = self.empleado_dao.buscarPorId(responsable_id)
+        responsable = self.empleado_dao.buscar_por_id(responsable_id)
         if responsable is None or not responsable[1].lower().startswith(
             ("administrador", "gerente")
         ):
@@ -202,13 +202,13 @@ class ServicioAutenticacion:
                 "El responsable debe tener puesto de Administrador o Gerente."
             )
 
-    def existeAdministrador(self):
+    def existe_administrador(self):
         # Permite a Main saber si hace falta la configuración inicial.
-        return self.usuario_dao.existeRol(ROL_ADMINISTRADOR)
+        return self.usuario_dao.existe_rol(ROL_ADMINISTRADOR)
 
-    def registrarPrimerAdministrador(self, username, clave, confirmacion, empleado_dto=None):
+    def registrar_primer_administrador(self, username, clave, confirmacion, empleado_dto=None):
         # Única operación sin sesión: crea el administrador inicial durante la instalación.Solo se permite mientras no exista ninguno; después, los usuarios se registran desde el sistema.
-        if self.existeAdministrador():
+        if self.existe_administrador():
             raise PermissionError("Ya existe un administrador. Los nuevos usuarios se registran desde el sistema.")
 
         if empleado_dto is not None and self.empleado_dao is None:
@@ -218,26 +218,26 @@ class ServicioAutenticacion:
         if empleado_dto is not None:
             self.empleado_dao.agregar(empleado_dto)
 
-    def cambiarPassword(self, usuario, claveActual, claveNueva, confirmacion):
-        self._validarClave(claveNueva, confirmacion)
+    def cambiar_password(self, usuario, claveActual, claveNueva, confirmacion):
+        self._validar_clave(claveNueva, confirmacion)
 
         # El servicio calcula los hashes: la clave actual con la salt del hash guardado, y la nueva con una salt nueva. El dominio verifica la clave actual y la sesión.
-        dto = self.usuario_dao.buscarPorUsername(usuario.obtenerIdentidad())
+        dto = self.usuario_dao.buscar_por_username(usuario.obtener_identidad())
         if dto is None:
             raise ValueError("La cuenta de usuario ya no existe.")
-        hashActual = self._verificador.generarComoGuardado(claveActual, dto.passwordHash)
+        hashActual = self._verificador.generar_como_guardado(claveActual, dto.passwordHash)
         hashNuevo = self._verificador.generar(claveNueva)
-        if not usuario.cambiarPassword(hashActual, hashNuevo):
+        if not usuario.cambiar_password(hashActual, hashNuevo):
             raise ValueError("La contraseña actual no es correcta.")
 
         # Negocio → Persistencia: se guarda el nuevo hash.
-        self.usuario_dao.actualizarPassword(usuario.obtenerIdentidad(), hashNuevo)
+        self.usuario_dao.actualizar_password(usuario.obtener_identidad(), hashNuevo)
         return True
 
-    def validarClave(self, clave, confirmacion):
-        self._validarClave(clave, confirmacion)
+    def validar_clave(self, clave, confirmacion):
+        self._validar_clave(clave, confirmacion)
 
-    def _validarClave(self, clave, confirmacion):
+    def _validar_clave(self, clave, confirmacion):
         # La contraseña se escribe dos veces para evitar errores de tipeo.
         if clave != confirmacion:
             raise ValueError("Las contraseñas no coinciden.")
@@ -256,17 +256,17 @@ class ServicioAutenticacion:
             raise ValueError("El usuario y la contraseña son obligatorios.")
         if len(username) > 50:
             raise ValueError("El nombre de usuario no puede superar los 50 caracteres.")
-        self._validarClave(clave, confirmacion)
+        self._validar_clave(clave, confirmacion)
 
         # Crear el objeto de dominio; la contraseña se transforma en hash antes de entregársela.
         passwordHash = self._verificador.generar(clave)
         usuario = Usuario(username, passwordHash, rol)
 
         # El dominio aplica su regla; el servicio informa si la rechazó.
-        if not usuario.tieneRolValido():
+        if not usuario.tiene_rol_valido():
             raise ValueError("El rol no es válido.")
-        if self.usuario_dao.buscarPorUsername(username) is not None:
+        if self.usuario_dao.buscar_por_username(username) is not None:
             raise ValueError("El nombre de usuario ya existe.")
 
         # Dominio → DTO → Persistencia: el DAO recibe un DTO y lo guarda en la BD.
-        self.usuario_dao.agregar(UsuarioDTO(None, usuario.obtenerIdentidad(), passwordHash, usuario.obtenerRol()))
+        self.usuario_dao.agregar(UsuarioDTO(None, usuario.obtener_identidad(), passwordHash, usuario.obtener_rol()))

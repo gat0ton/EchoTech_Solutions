@@ -16,25 +16,25 @@ class MenuProyectos(MenuArea):
     ]
 
     
-    def obtenerTitulo(self):
+    def obtener_titulo(self):
         return "PROYECTOS"
 
-    def obtenerOpciones(self):
+    def obtener_opciones(self):
         return self._OPCIONES
 
     def ejecutar(self, accion):
         if accion == "crear_proyecto":
-            self._crearProyecto()
+            self._crear_proyecto()
         elif accion == "asignar_proyecto":
-            self._asignarEmpleado()
+            self._asignar_empleado()
         elif accion == "consultar_proyecto":
-            self._consultarProyecto()
+            self._consultar_proyecto()
         elif accion == "historial_registros":
-            self._historialRegistros()
+            self._historial_registros()
         else:
             super().ejecutar(accion)
 
-    def _crearProyecto(self):
+    def _crear_proyecto(self):
         print("\n--- CREAR PROYECTO ---")
         try:
             proyecto = ProyectoDTO(
@@ -49,14 +49,14 @@ class MenuProyectos(MenuArea):
                 None,
                 None,
             )
-            proyecto_id = self.servicio.registrarProyecto(self.usuario, proyecto)
+            proyecto_id = self.servicio.registrar_proyecto(self.usuario, proyecto)
             print(f"Proyecto registrado correctamente con ID {proyecto_id}.")
         except (ValueError, PermissionError, RuntimeError, ConnectionError) as error:
             print(f"Error: {error}")
 
-    def _consultarProyecto(self):
+    def _consultar_proyecto(self):
         try:
-            proyecto = self.servicio.consultarProyecto(
+            proyecto = self.servicio.consultar_proyecto(
                 self.usuario, int(input("ID del proyecto: ").strip())
             )
             print(f"\n--- {proyecto['nombre']} ---")
@@ -78,21 +78,21 @@ class MenuProyectos(MenuArea):
         except (ValueError, PermissionError, RuntimeError) as error:
             print(f"Error: {error}")
 
-    def _asignarEmpleado(self):
+    def _asignar_empleado(self):
         try:
             proyecto_id = int(input("ID del proyecto: ").strip())
             empleado_id = int(input("ID del empleado: ").strip())
-            self.servicio.asociarEmpleadoProyecto(
+            self.servicio.asociar_empleado_proyecto(
                 self.usuario, proyecto_id, empleado_id
             )
             print("Empleado asociado al proyecto correctamente.")
         except (ValueError, PermissionError, RuntimeError) as error:
             print(f"Error: {error}")
 
-    def _historialRegistros(self):
+    def _historial_registros(self):
         try:
             proyecto_id = int(input("ID del proyecto: ").strip())
-            registros = self.servicio.consultarHistorialProyecto(
+            registros = self.servicio.consultar_historial_proyecto(
                 self.usuario, proyecto_id
             )
             print(f"\n--- HISTORIAL DEL PROYECTO {proyecto_id} ---")

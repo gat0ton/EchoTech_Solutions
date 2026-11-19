@@ -67,7 +67,7 @@ class ProyectoDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible registrar el proyecto.") from error
 
-    def buscarDetalle(self, proyecto_id):
+    def buscar_detalle(self, proyecto_id):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(
@@ -114,7 +114,7 @@ class ProyectoDAO:
                 )
         return proyecto
 
-    def historialRegistros(self, proyecto_id):
+    def historial_registros(self, proyecto_id):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(
@@ -144,7 +144,7 @@ class ProyectoDAO:
             for fila in filas
         ]
 
-    def asociarEmpleado(self, proyecto_id, empleado_id):
+    def asociar_empleado(self, proyecto_id, empleado_id):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(

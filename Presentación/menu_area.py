@@ -7,28 +7,28 @@ class MenuArea(ABC):
         self.servicio = servicio_autenticacion
 
     @abstractmethod
-    def obtenerTitulo(self):
+    def obtener_titulo(self):
         """Título del área que se muestra en el menú principal y en el encabezado."""
 
     @abstractmethod
-    def obtenerOpciones(self):
+    def obtener_opciones(self):
         """Lista de opciones del área: (texto que se muestra, acción que debe estar permitida)."""
 
-    def opcionesDisponibles(self):
-        return [(texto, accion) for texto, accion in self.obtenerOpciones()
-                if self.usuario.verificarAutorizacion(accion)]
+    def opciones_disponibles(self):
+        return [(texto, accion) for texto, accion in self.obtener_opciones()
+                if self.usuario.verificar_autorizacion(accion)]
 
-    def tieneOpciones(self):
-        return len(self.opcionesDisponibles()) > 0
+    def tiene_opciones(self):
+        return len(self.opciones_disponibles()) > 0
 
-    def mostrarMenu(self):
+    def mostrar_menu(self):
         while True:
-            opciones = self.opcionesDisponibles()
+            opciones = self.opciones_disponibles()
             volver = len(opciones) + 1
 
             print("\n" + "*" * 44)
-            print(self.obtenerTitulo().center(44))
-            print(f"Usuario: {self.usuario.obtenerIdentidad()}".center(44))
+            print(self.obtener_titulo().center(44))
+            print(f"Usuario: {self.usuario.obtener_identidad()}".center(44))
             print("*" * 44 + "\n")
             for numero, (texto, _) in enumerate(opciones, 1):
                 print(f"{numero:>4}. {texto}")

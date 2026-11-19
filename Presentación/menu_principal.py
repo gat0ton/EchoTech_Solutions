@@ -9,18 +9,18 @@ class MenuPrincipal:
         self.usuario = usuario
         self.servicio = servicio_autenticacion
 
-    def mostrarMenu(self):
+    def mostrar_menu(self):
         areas = [
             menu for menu in (
                 MenuRecursosHumanos(self.usuario, self.servicio),
                 MenuProyectos(self.usuario, self.servicio),
             )
-            if menu.tieneOpciones()
+            if menu.tiene_opciones()
         ]
 
         if not areas:
             print("\nEl usuario no tiene un rol reconocido.")
-            self.usuario.cerrarSesion()
+            self.usuario.cerrar_sesion()
             return
 
         cambiar = len(areas) + 1
@@ -29,10 +29,10 @@ class MenuPrincipal:
         while True:
             print("\n" + "*" * 44)
             print("MENÚ PRINCIPAL".center(44))
-            print(f"Usuario: {self.usuario.obtenerIdentidad()} ({self.usuario.obtenerRol()})".center(44))
+            print(f"Usuario: {self.usuario.obtener_identidad()} ({self.usuario.obtener_rol()})".center(44))
             print("*" * 44 + "\n")
             for numero, menu in enumerate(areas, 1):
-                print(f"{numero:>4}. {menu.obtenerTitulo().capitalize()}")
+                print(f"{numero:>4}. {menu.obtener_titulo().capitalize()}")
             print(f"{cambiar:>4}. Cambiar contraseña")
             print(f"{cerrar:>4}. Cerrar sesión\n")
 
@@ -43,24 +43,24 @@ class MenuPrincipal:
                 continue
 
             if 1 <= opcion <= len(areas):
-                areas[opcion - 1].mostrarMenu()
+                areas[opcion - 1].mostrar_menu()
             elif opcion == cambiar:
-                self._cambiarPassword()
+                self._cambiar_password()
             elif opcion == cerrar:
-                self.usuario.cerrarSesion()
+                self.usuario.cerrar_sesion()
                 print("Sesión finalizada.")
                 return
             else:
                 print(f"Opción no válida. Elija un número del 1 al {cerrar}.")
 
-    def _cambiarPassword(self):
+    def _cambiar_password(self):
         print("\n--- CAMBIAR CONTRASEÑA ---")
         claveActual = getpass.getpass("Contraseña actual: ")
         claveNueva = getpass.getpass("Contraseña nueva (mínimo 8 caracteres, con letras y números): ")
         confirmacion = getpass.getpass("Repita la contraseña nueva: ")
 
         try:
-            self.servicio.cambiarPassword(self.usuario, claveActual, claveNueva, confirmacion)
+            self.servicio.cambiar_password(self.usuario, claveActual, claveNueva, confirmacion)
             print("Contraseña actualizada correctamente.")
         except (ValueError, RuntimeError) as error:
             print(f"Error: {error}")

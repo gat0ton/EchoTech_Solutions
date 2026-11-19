@@ -26,12 +26,12 @@ class Flujo:
         login = Login(servicio_autenticacion)
 
         try:
-            hayAdministrador = servicio_autenticacion.existeAdministrador()
+            hayAdministrador = servicio_autenticacion.existe_administrador()
         except RuntimeError:
             print("Error al acceder a la base de datos. Revise la configuración del archivo .env.")
             return
 
-        if not hayAdministrador and not login.crearPrimerAdministrador():
+        if not hayAdministrador and not login.crear_primer_administrador():
             print("\nNo es posible usar el sistema sin un administrador. Saliendo...")
             return
 
@@ -43,5 +43,5 @@ class Flujo:
                 print("\nSaliendo del sistema...")
                 break
 
-            MenuPrincipal(usuario, servicio_autenticacion).mostrarMenu()
+            MenuPrincipal(usuario, servicio_autenticacion).mostrar_menu()
 

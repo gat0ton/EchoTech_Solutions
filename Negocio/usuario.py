@@ -43,27 +43,27 @@ class Usuario:
         return self._sesionActiva
 
      
-    def cambiarPassword(self, claveActual, claveNueva):
+    def cambiar_password(self, claveActual, claveNueva):
         if not self._sesionActiva or self._password != claveActual:
             return False
         self._password = claveNueva
         return True
 
-    def verificarAutorizacion(self, moduloOAccion):
+    def verificar_autorizacion(self, moduloOAccion):
         return self._sesionActiva and moduloOAccion in self._PERMISOS.get(self._rol, set())
 
-    def cerrarSesion(self):
+    def cerrar_sesion(self):
         self._sesionActiva = False
 
-    def obtenerIdentidad(self):
+    def obtener_identidad(self):
         return self._username
 
-    def actualizarIdentidad(self, username):
+    def actualizar_identidad(self, username):
         self._username = username
 
-    def obtenerRol(self):
+    def obtener_rol(self):
         return self._rol
 
     
-    def tieneRolValido(self):
+    def tiene_rol_valido(self):
         return self._rol in self._PERMISOS

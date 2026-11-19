@@ -27,27 +27,27 @@ class MenuRecursosHumanos(MenuArea):
     ]
 
     # Implementación obligatoria de los métodos abstractos de MenuArea.
-    def obtenerTitulo(self):
+    def obtener_titulo(self):
         return "RECURSOS HUMANOS"
 
-    def obtenerOpciones(self):
+    def obtener_opciones(self):
         return self._OPCIONES
 
     def ejecutar(self, accion):
         if accion == "registrar_usuario":
-            self._registrarUsuario()
+            self._registrar_usuario()
         elif accion == "registrar_empleado":
-            self._registrarEmpleado()
+            self._registrar_empleado()
         elif accion == "crear_departamento":
-            self._crearDepartamento()
+            self._crear_departamento()
         elif accion == "editar_departamento":
-            self._editarDepartamento()
+            self._editar_departamento()
         elif accion == "modificar_mis_datos":
-            self._modificarMisDatos()
+            self._modificar_mis_datos()
         else:
             super().ejecutar(accion)
 
-    def _registrarEmpleado(self):
+    def _registrar_empleado(self):
         print("\n--- REGISTRAR EMPLEADO ---")
         try:
             username = input("Nombre de usuario: ").strip()
@@ -70,20 +70,20 @@ class MenuRecursosHumanos(MenuArea):
                 id_empleado, nombre, apellido, edad, genero, telefono, direccion,
                 correo, 0, salario, puesto, username, departamento
             )
-            self.servicio.registrarEmpleado(
+            self.servicio.registrar_empleado(
                 self.usuario, empleado, clave, confirmacion
             )
             print(f"Empleado '{username}' registrado correctamente.")
         except (ValueError, PermissionError, RuntimeError) as error:
             print(f"Error: {error}")
 
-    def _crearDepartamento(self):
+    def _crear_departamento(self):
         print("\n--- CREAR DEPARTAMENTO ---")
         try:
             nombre = input("Nombre: ").strip()
             descripcion = input("Descripción: ").strip()
             responsable_id = int(input("ID del administrador o gerente responsable: "))
-            self.servicio.registrarDepartamento(
+            self.servicio.registrar_departamento(
                 self.usuario,
                 DepartamentoDTO(nombre, descripcion, responsable_id),
             )
@@ -91,35 +91,35 @@ class MenuRecursosHumanos(MenuArea):
         except (ValueError, PermissionError, RuntimeError) as error:
             print(f"Error: {error}")
 
-    def _editarDepartamento(self):
+    def _editar_departamento(self):
         print("\n--- EDITAR DEPARTAMENTO ---")
         try:
             nombre = input("Nombre del departamento: ").strip()
             descripcion = input("Nueva descripción: ").strip()
             responsable_id = int(input("Nuevo ID del administrador o gerente responsable: "))
-            self.servicio.actualizarDepartamento(
+            self.servicio.actualizar_departamento(
                 self.usuario, nombre, descripcion, responsable_id
             )
             print("Departamento actualizado correctamente.")
         except (ValueError, PermissionError, RuntimeError) as error:
             print(f"Error: {error}")
 
-    def _modificarMisDatos(self):
+    def _modificar_mis_datos(self):
         print("\n--- MODIFICAR MIS DATOS ---")
         try:
             nuevo_username = input("Nuevo nombre de usuario: ").strip()
             telefono = input("Nuevo teléfono: ").strip()
             direccion = input("Nueva dirección: ").strip()
             correo = input("Nuevo correo: ").strip()
-            self.servicio.actualizarMiEmpleado(
+            self.servicio.actualizar_mi_empleado(
                 self.usuario, nuevo_username, telefono, direccion, correo
             )
             print("Datos actualizados correctamente.")
         except (ValueError, PermissionError, RuntimeError) as error:
             print(f"Error: {error}")
 
-    def _registrarUsuario(self):
-        # Por ahora crea solo la cuenta de acceso. Al implementar Empleado, esta opción debe pasar a GestorRecursosHumanos.registrarEmpleado(), que crea la ficha del empleado y su cuenta juntas.
+    def _registrar_usuario(self):
+        # Por ahora crea solo la cuenta de acceso. Al implementar Empleado, esta opción debe pasar a GestorRecursosHumanos.registrar_empleado(), que crea la ficha del empleado y su cuenta juntas.
         
         print("\n--- REGISTRAR USUARIO ---")
 
@@ -135,7 +135,7 @@ class MenuRecursosHumanos(MenuArea):
 
         # Presentación → Negocio: se envía el usuario de la sesión para que el servicio verifique el permiso.
         try:
-            self.servicio.registrarUsuario(self.usuario, username, clave, confirmacion, rol)
+            self.servicio.registrar_usuario(self.usuario, username, clave, confirmacion, rol)
             print(f"Usuario '{username}' registrado correctamente como {rol}.")
         # ErrorPersistencia hereda de RuntimeError.
         except (ValueError, PermissionError, RuntimeError) as error:

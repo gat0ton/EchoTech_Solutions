@@ -26,7 +26,7 @@ class UsuarioDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible registrar el usuario.") from error
 
-    def buscarPorUsername(self, username):
+    def buscar_por_username(self, username):
         try:
             with self.conexion.conectar() as conexion_activa:                           
                 cursor = self.conexion.ejecuta_query(                                   
@@ -45,7 +45,7 @@ class UsuarioDAO:
             return None
         return UsuarioDTO(*fila)
 
-    def actualizarPassword(self, username, passwordHash):
+    def actualizar_password(self, username, passwordHash):
         try:
             with self.conexion.conectar() as conexion_activa:                           
                 cursor = self.conexion.ejecuta_query(                                   
@@ -60,7 +60,7 @@ class UsuarioDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible actualizar la contraseña.") from error
 
-    def actualizarUsername(self, username, nuevo_username):
+    def actualizar_username(self, username, nuevo_username):
         try:
             with self.conexion.conectar() as conexion_activa:
                 cursor = self.conexion.ejecuta_query(
@@ -75,7 +75,7 @@ class UsuarioDAO:
         except pymysql.MySQLError as error:
             raise ErrorPersistencia("No fue posible actualizar el nombre de usuario.") from error
 
-    def existeRol(self, rol):
+    def existe_rol(self, rol):
         try:
             with self.conexion.conectar() as conexion_activa:                           
                 cursor = self.conexion.ejecuta_query(                                   
